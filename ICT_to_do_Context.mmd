@@ -1,0 +1,21 @@
+%% Prompt to Copilot Chat: Create a C4 Context diagram in Mermaid syntax for "ICT To Do List"
+%% based on the repository's `c4-lab/system_description.md`. Include actors: Student,
+%% Instructor, System Administrator, external MyCourses, and University SSO. Keep it C4 Level 1.
+
+C4Context
+title ICT To Do List — System Context
+
+Person(student, "Student", "Manages personal tasks, views assignments and submission status")
+Person(instructor, "Instructor", "Views teaching-related tasks and course deadlines; cannot see student private tasks")
+Person(admin, "System Administrator", "Manages configuration, user accounts, and monitors sync health")
+
+System(ict, "ICT To Do List", "Tracks manual and imported tasks; Web App (React), Mobile App (Flutter), Backend (Python FastAPI), Database (PostgreSQL)")
+System_Ext(mycourses, "MyCourses", "External e-learning system exposing JSON web services for courses, assignments, and submission status")
+System_Ext(sso, "University SSO / OAuth2 Provider", "Authentication provider used for single sign-on and token validation")
+
+Rel(student, ict, "Uses via Web App or Mobile App over HTTPS (JSON API)")
+Rel(instructor, ict, "Uses teacher/overview views via Web App")
+Rel(admin, ict, "Uses admin interface to manage settings and view sync health")
+Rel(ict, mycourses, "Retrieves courses, assignments, and submission status (HTTPS/JSON) — MyCourses Connector")
+Rel(student, sso, "Authenticates via SSO")
+Rel(ict, sso, "Validates tokens / delegates authentication")
